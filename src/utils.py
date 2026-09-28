@@ -1,4 +1,4 @@
-"""Utilities for creating store entities from external data."""
+"""Функции для создания объектов магазина из внешних данных."""
 
 import json
 from pathlib import Path
@@ -8,7 +8,7 @@ from src.classes import Category, Product
 
 
 class ProductData(TypedDict):
-    """Expected JSON representation of a product."""
+    """Ожидаемое представление товара в JSON."""
 
     name: str
     description: str
@@ -17,7 +17,7 @@ class ProductData(TypedDict):
 
 
 class CategoryData(TypedDict):
-    """Expected JSON representation of a category."""
+    """Ожидаемое представление категории в JSON."""
 
     name: str
     description: str
@@ -25,7 +25,7 @@ class CategoryData(TypedDict):
 
 
 def load_categories_from_json(file_path: str | Path) -> list[Category]:
-    """Read categories from a UTF-8 JSON file and create domain objects."""
+    """Загружает категории из JSON-файла в кодировке UTF-8."""
 
     with Path(file_path).open(encoding="utf-8") as file:
         categories_data: list[CategoryData] = json.load(file)
