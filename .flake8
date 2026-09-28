@@ -1,0 +1,4 @@
+[flake8]
+max-line-length = 88
+jobs = 1
+exclude = .git,.idea,.venv,__pycache__,htmlcov
