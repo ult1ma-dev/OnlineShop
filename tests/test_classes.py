@@ -17,7 +17,29 @@ def test_product_initialization() -> None:
     assert product.description == "256GB, Серый цвет, 200MP камера"
     assert product.price == 180000.50
     assert product.quantity == 5
-    assert not hasattr(product, "__price")
+
+
+@pytest.mark.parametrize("creation_method", ["constructor", "new_product"])
+def test_product_price_is_private(creation_method: str) -> None:
+    if creation_method == "constructor":
+        product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    else:
+        product = Product.new_product(
+            {
+                "name": "Iphone 15",
+                "description": "512GB, Gray space",
+                "price": 210000.0,
+                "quantity": 8,
+            }
+        )
+
+    assert vars(product)["_Product__price"] == 210000.0
+    assert "price" not in vars(product)
+    assert "_price" not in vars(product)
+    assert isinstance(Product.price, property)
+    assert product.price == 210000.0
+    with pytest.raises(AttributeError):
+        getattr(product, "__price")
 
 
 def test_category_initialization() -> None:
@@ -77,6 +99,9 @@ def test_price_setter_updates_positive_price() -> None:
     product.price = 200000.0
 
     assert product.price == 200000.0
+    assert vars(product)["_Product__price"] == 200000.0
+    assert "price" not in vars(product)
+    assert "_price" not in vars(product)
 
 
 @pytest.mark.parametrize("new_price", [0, -100.0])
@@ -84,10 +109,12 @@ def test_price_setter_rejects_nonpositive_price(
     new_price: float, capsys: pytest.CaptureFixture[str]
 ) -> None:
     product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    original_attributes = vars(product).copy()
 
     product.price = new_price
 
     assert product.price == 210000.0
+    assert vars(product) == original_attributes
     assert capsys.readouterr().out == "Цена не должна быть нулевая или отрицательная\n"
 
 
