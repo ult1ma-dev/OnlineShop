@@ -31,10 +31,12 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: object) -> float | NotImplementedType:
-        """Возвращает общую стоимость остатков двух товаров."""
+        """Возвращает стоимость остатков двух товаров одинакового класса."""
 
         if not isinstance(other, Product):
             return NotImplemented
+        if type(self) is not type(other):
+            raise TypeError("Можно складывать только товары одинакового класса")
         return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
@@ -64,6 +66,46 @@ class Product:
             self.__price = new_price
 
 
+class Smartphone(Product):
+    """Смартфон с характеристиками производительности и памяти."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Газонная трава с указанием происхождения и срока прорастания."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ) -> None:
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+
 class Category:
     """Категория, объединяющая товары магазина."""
 
@@ -90,8 +132,10 @@ class Category:
         return iter(self.__products)
 
     def add_product(self, product: Product) -> None:
-        """Добавляет товар в категорию."""
+        """Добавляет товар или его наследника, отклоняя посторонние объекты."""
 
+        if not isinstance(product, Product):
+            raise TypeError("В категорию можно добавлять только товары")
         self.__products.append(product)
         Category.product_count += 1
 
