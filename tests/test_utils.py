@@ -1,11 +1,11 @@
-"""Tests for JSON loading utilities."""
+"""Тесты функций загрузки данных из JSON."""
 
 import json
 from pathlib import Path
 
 import pytest
 
-from src.classes import Category, Product
+from src.classes import Category
 from src.utils import load_categories_from_json, read_json
 
 
@@ -15,9 +15,10 @@ def test_load_categories_from_json() -> None:
     assert len(categories) == 2
     assert all(isinstance(category, Category) for category in categories)
     assert categories[0].name == "Смартфоны"
-    assert len(categories[0].products) == 3
-    assert isinstance(categories[0].products[0], Product)
-    assert categories[0].products[0].price == 180000.0
+    assert categories[0].products.startswith(
+        "Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт.\n"
+    )
+    assert categories[0].products.count("\n") == 3
     assert Category.category_count == 2
     assert Category.product_count == 4
 

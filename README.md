@@ -26,6 +26,27 @@ from src.utils import load_categories_from_json
 categories = load_categories_from_json("data/products.json")
 ```
 
+Цена товара хранится в приватном атрибуте `Product.__price`. Python преобразует
+его имя в `_Product__price`. Читать и изменять цену следует через свойство `price`:
+
+```python
+from src.classes import Product
+
+product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+print(product.price)
+product.price = 200000.0
+```
+
+Сеттер принимает положительную цену. При попытке установить нулевую или
+отрицательную цену он выводит сообщение и сохраняет прежнее значение.
+Приватное хранение цены проверяется тестами для конструктора и `new_product()`.
+
+## Повторная сдача
+
+Реализация задания находится в ветке
+[`Feature/14_2`](https://github.com/ult1ma-dev/OnlineShop/tree/Feature/14_2).
+Для проверки преподавателю нужно передать ссылку на эту ветку.
+
 ## Проверка качества
 
 ```bash
