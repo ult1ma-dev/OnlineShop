@@ -30,7 +30,7 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "-ra --strict-markers --cov=src --cov-branch --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=75"
+addopts = "-ra --strict-markers --cov=src --cov-branch --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=76"
 
 [tool.coverage.run]
 branch = true
@@ -38,7 +38,7 @@ relative_files = true
 source = ["src"]
 
 [tool.coverage.report]
-fail_under = 75
+fail_under = 76
 precision = 2
 show_missing = true
 
