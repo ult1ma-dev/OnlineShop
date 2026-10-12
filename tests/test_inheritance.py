@@ -109,6 +109,7 @@ def test_subclasses_reject_nonpositive_price(
 ) -> None:
     product = product_pairs[kind][0]
     original_attributes = vars(product).copy()
+    capsys.readouterr()
 
     product.price = new_price
 
