@@ -5,6 +5,8 @@ from collections.abc import Iterator
 from types import NotImplementedType
 from typing import ClassVar, Self, TypedDict
 
+from src.exceptions import ZeroQuantityError
+
 
 class ProductData(TypedDict):
     """Данные, необходимые для создания товара."""
@@ -93,6 +95,10 @@ class Product(PrintMixin, BaseProduct):
     def __init__(
         self, name: str, description: str, price: float, quantity: int
     ) -> None:
+        if quantity == 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
         self.name = name
         self.description = description
         self.__price = price
@@ -237,12 +243,32 @@ class Category(BaseEntity):
         return iter(self.__products)
 
     def add_product(self, product: Product) -> None:
-        """Добавляет товар или его наследника, отклоняя посторонние объекты."""
+        """Добавляет товар с ненулевым остатком и сообщает результат."""
 
-        if not isinstance(product, Product):
-            raise TypeError("В категорию можно добавлять только товары")
-        self.__products.append(product)
-        Category.product_count += 1
+        try:
+            if not isinstance(product, Product):
+                raise TypeError("В категорию можно добавлять только товары")
+            if product.quantity == 0:
+                raise ZeroQuantityError()
+        except ZeroQuantityError as error:
+            print(error)
+            raise
+        else:
+            self.__products.append(product)
+            Category.product_count += 1
+            print("Товар успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
+
+    def middle_price(self) -> float:
+        """Возвращает среднюю цену товаров или ноль для пустой категории."""
+
+        try:
+            return sum(product.price for product in self.__products) / len(
+                self.__products
+            )
+        except ZeroDivisionError:
+            return 0
 
     @property
     def products(self) -> str:
@@ -255,19 +281,30 @@ class Order(BaseEntity):
     """Покупка одного товара с количеством и стоимостью на момент создания."""
 
     def __init__(self, product: Product, quantity: int) -> None:
-        if not isinstance(product, Product):
-            raise TypeError(
-                "В заказе должен быть один товар или его наследник"
-            )
-        if type(quantity) is not int:
-            raise TypeError("Количество в заказе должно быть целым числом")
-        if quantity <= 0:
-            raise ValueError("Количество в заказе должно быть положительным")
-
-        super().__init__(product.name, product.description)
-        self.product = product
-        self.quantity = quantity
-        self.total_cost = product.price * quantity
+        try:
+            if not isinstance(product, Product):
+                raise TypeError(
+                    "В заказе должен быть один товар или его наследник"
+                )
+            if type(quantity) is not int:
+                raise TypeError("Количество в заказе должно быть целым числом")
+            if quantity <= 0:
+                raise ValueError(
+                    "Количество в заказе должно быть положительным"
+                )
+            if product.quantity == 0:
+                raise ZeroQuantityError()
+        except ZeroQuantityError as error:
+            print(error)
+            raise
+        else:
+            super().__init__(product.name, product.description)
+            self.product = product
+            self.quantity = quantity
+            self.total_cost = product.price * quantity
+            print("Товар успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
 
     def __str__(self) -> str:
         """Возвращает название товара, купленное количество и стоимость."""
