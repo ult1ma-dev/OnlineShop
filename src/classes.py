@@ -36,7 +36,9 @@ class Product:
         if not isinstance(other, Product):
             return NotImplemented
         if type(self) is not type(other):
-            raise TypeError("Можно складывать только товары одинакового класса")
+            raise TypeError(
+                "Можно складывать только товары одинакового класса"
+            )
         return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
@@ -112,7 +114,9 @@ class Category:
     category_count: ClassVar[int] = 0
     product_count: ClassVar[int] = 0
 
-    def __init__(self, name: str, description: str, products: list[Product]) -> None:
+    def __init__(
+        self, name: str, description: str, products: list[Product]
+    ) -> None:
         self.name = name
         self.description = description
         self.__products = products

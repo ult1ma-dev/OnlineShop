@@ -123,6 +123,9 @@ poetry run python main.py
 
 ## Проверка качества
 
+Для Python-кода установлен лимит длины строки 79 символов по PEP8.
+Настройки Black, isort и Flake8 согласованы с этим ограничением.
+
 ```bash
 poetry run pytest
 poetry run black --check .

@@ -1,6 +1,12 @@
 """Публичный интерфейс пакета моделей магазина."""
 
-from src.classes import Category, CategoryIterator, LawnGrass, Product, Smartphone
+from src.classes import (
+    Category,
+    CategoryIterator,
+    LawnGrass,
+    Product,
+    Smartphone,
+)
 from src.utils import load_categories_from_json, read_json
 
 __all__ = [

@@ -23,12 +23,20 @@ def product_pairs() -> dict[str, tuple[Product, Product]]:
             Product("Другой товар", "Описание", 25.0, 2),
         ),
         "smartphone": (
-            Smartphone("Телефон", "Описание", 100.0, 3, 95.5, "A", 128, "Белый"),
-            Smartphone("Другой телефон", "Описание", 25.0, 2, 98.2, "B", 256, "Черный"),
+            Smartphone(
+                "Телефон", "Описание", 100.0, 3, 95.5, "A", 128, "Белый"
+            ),
+            Smartphone(
+                "Другой телефон", "Описание", 25.0, 2, 98.2, "B", 256, "Черный"
+            ),
         ),
         "lawn_grass": (
-            LawnGrass("Трава", "Описание", 100.0, 3, "Россия", "7 дней", "Зеленый"),
-            LawnGrass("Другая трава", "Описание", 25.0, 2, "США", "5 дней", "Темный"),
+            LawnGrass(
+                "Трава", "Описание", 100.0, 3, "Россия", "7 дней", "Зеленый"
+            ),
+            LawnGrass(
+                "Другая трава", "Описание", 25.0, 2, "США", "5 дней", "Темный"
+            ),
         ),
         "custom": (
             CustomProduct("Особый товар", "Описание", 100.0, 3),
@@ -105,7 +113,10 @@ def test_subclasses_reject_nonpositive_price(
     product.price = new_price
 
     assert vars(product) == original_attributes
-    assert capsys.readouterr().out == "Цена не должна быть нулевая или отрицательная\n"
+    assert (
+        capsys.readouterr().out
+        == "Цена не должна быть нулевая или отрицательная\n"
+    )
 
 
 @pytest.mark.parametrize("kind", PRODUCT_KINDS)
@@ -167,7 +178,9 @@ def test_category_accepts_products_and_subclasses(
 @pytest.mark.parametrize(
     "invalid_product", [100, "товар", None, {}, [], object(), Product]
 )
-def test_category_rejects_nonproducts_without_changes(invalid_product: object) -> None:
+def test_category_rejects_nonproducts_without_changes(
+    invalid_product: object,
+) -> None:
     product = Product("Телефон", "Описание", 100.0, 3)
     category = Category("Смартфоны", "Описание", [product])
     original_products = category.products
