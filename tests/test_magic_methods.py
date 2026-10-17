@@ -14,7 +14,8 @@ from src.classes import Category, Product
     ],
 )
 def test_product_str(price: float, quantity: int, expected: str) -> None:
-    product = Product("Телефон", "Описание", price, quantity)
+    product = Product("Телефон", "Описание", price, max(quantity, 1))
+    product.quantity = quantity
 
     assert str(product) == expected
 
@@ -98,10 +99,14 @@ def test_product_add(
     second_quantity: int,
     expected: float,
 ) -> None:
-    first_product = Product("Телефон", "Описание", first_price, first_quantity)
-    second_product = Product(
-        "Чехол", "Описание", second_price, second_quantity
+    first_product = Product(
+        "Телефон", "Описание", first_price, max(first_quantity, 1)
     )
+    second_product = Product(
+        "Чехол", "Описание", second_price, max(second_quantity, 1)
+    )
+    first_product.quantity = first_quantity
+    second_product.quantity = second_quantity
     first_attributes = vars(first_product).copy()
     second_attributes = vars(second_product).copy()
 
