@@ -20,11 +20,19 @@ def test_main_runs_assignment_example_without_errors() -> None:
 
     lines = result.stdout.splitlines()
     assert result.stderr == ""
-    assert "2580000.0" in lines
-    assert "16750.0" in lines
-    assert "Возникла ошибка TypeError при попытке сложения" in lines
-    assert lines[-2:] == [
-        "5",
-        "Возникла ошибка TypeError при добавлении не продукта",
+    creation_lines = [line for line in lines if line.startswith("Product(")]
+    assert creation_lines == [
+        "Product('Samsung Galaxy S23 Ultra', "
+        "'256GB, Серый цвет, 200MP камера', 180000.0, 5)",
+        "Product('Iphone 15', '512GB, Gray space', 210000.0, 8)",
+        "Product('Xiaomi Redmi Note 11', '1024GB, Синий', 31000.0, 14)",
+        "Product('55\" QLED 4K', 'Фоновая подсветка', 123000.0, 7)",
     ]
-    assert "Не возникла ошибка" not in result.stdout
+    assert "True" in lines
+    assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.' in lines
+    assert lines[-3:] == [
+        "2",
+        "4",
+        "Samsung Galaxy S23 Ultra, количество: 2 шт. "
+        "Итоговая стоимость: 360000.0 руб.",
+    ]

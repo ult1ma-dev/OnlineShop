@@ -110,6 +110,7 @@ def test_price_setter_rejects_nonpositive_price(
 ) -> None:
     product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     original_attributes = vars(product).copy()
+    capsys.readouterr()
 
     product.price = new_price
 
