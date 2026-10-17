@@ -67,14 +67,22 @@ def test_category_products_uses_product_str() -> None:
             return "Особый товар"
 
     category = Category(
-        "Техника", "Описание", [CustomProduct("Телефон", "Описание", 100.0, 10)]
+        "Техника",
+        "Описание",
+        [CustomProduct("Телефон", "Описание", 100.0, 10)],
     )
 
     assert category.products == "Особый товар\n"
 
 
 @pytest.mark.parametrize(
-    ("first_price", "first_quantity", "second_price", "second_quantity", "expected"),
+    (
+        "first_price",
+        "first_quantity",
+        "second_price",
+        "second_quantity",
+        "expected",
+    ),
     [
         (100.0, 10, 200.0, 2, 1400.0),
         (125.5, 3, 25.25, 2, 427.0),
@@ -91,7 +99,9 @@ def test_product_add(
     expected: float,
 ) -> None:
     first_product = Product("Телефон", "Описание", first_price, first_quantity)
-    second_product = Product("Чехол", "Описание", second_price, second_quantity)
+    second_product = Product(
+        "Чехол", "Описание", second_price, second_quantity
+    )
     first_attributes = vars(first_product).copy()
     second_attributes = vars(second_product).copy()
 

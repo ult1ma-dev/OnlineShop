@@ -32,7 +32,9 @@ def test_read_json_alias_handles_empty_list(tmp_path: Path) -> None:
     assert Category.product_count == 0
 
 
-def test_load_categories_from_json_raises_for_invalid_json(tmp_path: Path) -> None:
+def test_load_categories_from_json_raises_for_invalid_json(
+    tmp_path: Path,
+) -> None:
     file_path = tmp_path / "invalid.json"
     file_path.write_text("not json", encoding="utf-8")
 
@@ -40,6 +42,8 @@ def test_load_categories_from_json_raises_for_invalid_json(tmp_path: Path) -> No
         load_categories_from_json(file_path)
 
 
-def test_load_categories_from_json_raises_for_missing_file(tmp_path: Path) -> None:
+def test_load_categories_from_json_raises_for_missing_file(
+    tmp_path: Path,
+) -> None:
     with pytest.raises(FileNotFoundError):
         load_categories_from_json(tmp_path / "missing.json")

@@ -115,7 +115,10 @@ def test_price_setter_rejects_nonpositive_price(
 
     assert product.price == 210000.0
     assert vars(product) == original_attributes
-    assert capsys.readouterr().out == "Цена не должна быть нулевая или отрицательная\n"
+    assert (
+        capsys.readouterr().out
+        == "Цена не должна быть нулевая или отрицательная\n"
+    )
 
 
 def test_products_property_has_no_setter() -> None:
