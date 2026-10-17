@@ -74,7 +74,9 @@ class PrintMixin:
     def __repr__(self) -> str:
         """Возвращает имя класса и текущие значения параметров конструктора."""
 
-        arguments = ", ".join(repr(getattr(self, field)) for field in self._repr_fields)
+        arguments = ", ".join(
+            repr(getattr(self, field)) for field in self._repr_fields
+        )
         return f"{type(self).__name__}({arguments})"
 
 
@@ -194,7 +196,7 @@ class LawnGrass(Product):
 
 
 class BaseEntity(ABC):
-    """Общие название, описание и строковое представление сущностей магазина."""
+    """Общие название, описание и строковое представление сущностей."""
 
     def __init__(self, name: str, description: str) -> None:
         self.name = name
@@ -254,7 +256,9 @@ class Order(BaseEntity):
 
     def __init__(self, product: Product, quantity: int) -> None:
         if not isinstance(product, Product):
-            raise TypeError("В заказе должен быть один товар или его наследник")
+            raise TypeError(
+                "В заказе должен быть один товар или его наследник"
+            )
         if type(quantity) is not int:
             raise TypeError("Количество в заказе должно быть целым числом")
         if quantity <= 0:

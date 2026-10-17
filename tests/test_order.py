@@ -77,7 +77,9 @@ def test_category_and_order_share_base_entity(product: Product) -> None:
     assert Category.product_count == 1
 
 
-def test_order_preserves_purchase_cost_and_description(product: Product) -> None:
+def test_order_preserves_purchase_cost_and_description(
+    product: Product,
+) -> None:
     order = Order(product, 2)
 
     product.price = 200.0
@@ -95,7 +97,9 @@ def test_order_preserves_purchase_cost_and_description(product: Product) -> None
 def test_order_str(product: Product) -> None:
     order = Order(product, 2)
 
-    assert str(order) == "Товар, количество: 2 шт. Итоговая стоимость: 201.0 руб."
+    assert (
+        str(order) == "Товар, количество: 2 шт. Итоговая стоимость: 201.0 руб."
+    )
 
 
 @pytest.mark.parametrize(
@@ -109,8 +113,12 @@ def test_order_rejects_nonproducts(invalid_product: object) -> None:
     assert Category.product_count == 0
 
 
-@pytest.mark.parametrize("quantity", [None, "2", 2.0, True, False, {}, [], object()])
-def test_order_rejects_noninteger_quantity(product: Product, quantity: object) -> None:
+@pytest.mark.parametrize(
+    "quantity", [None, "2", 2.0, True, False, {}, [], object()]
+)
+def test_order_rejects_noninteger_quantity(
+    product: Product, quantity: object
+) -> None:
     original_attributes = vars(product).copy()
 
     with pytest.raises(TypeError):
@@ -122,7 +130,9 @@ def test_order_rejects_noninteger_quantity(product: Product, quantity: object) -
 
 
 @pytest.mark.parametrize("quantity", [0, -1, -10])
-def test_order_rejects_nonpositive_quantity(product: Product, quantity: int) -> None:
+def test_order_rejects_nonpositive_quantity(
+    product: Product, quantity: int
+) -> None:
     original_attributes = vars(product).copy()
 
     with pytest.raises(ValueError):

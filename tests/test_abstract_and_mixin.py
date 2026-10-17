@@ -4,7 +4,14 @@ from inspect import isabstract
 
 import pytest
 
-from src import BaseEntity, BaseProduct, LawnGrass, PrintMixin, Product, Smartphone
+from src import (
+    BaseEntity,
+    BaseProduct,
+    LawnGrass,
+    PrintMixin,
+    Product,
+    Smartphone,
+)
 
 
 class IncompleteProduct(BaseProduct):
@@ -16,7 +23,9 @@ class NamedProduct(Product):
 
 
 @pytest.mark.parametrize("abstract_class", [BaseProduct, IncompleteProduct])
-def test_abstract_product_cannot_be_created(abstract_class: type[BaseProduct]) -> None:
+def test_abstract_product_cannot_be_created(
+    abstract_class: type[BaseProduct],
+) -> None:
     with pytest.raises(TypeError, match="abstract"):
         abstract_class()
 
@@ -80,7 +89,9 @@ def test_creation_prints_full_representation_once(
     assert capsys.readouterr().out == ""
 
 
-@pytest.mark.parametrize("creation_method", ["positional", "keyword", "factory"])
+@pytest.mark.parametrize(
+    "creation_method", ["positional", "keyword", "factory"]
+)
 def test_creation_prints_same_arguments_for_all_creation_methods(
     creation_method: str, capsys: pytest.CaptureFixture[str]
 ) -> None:
@@ -88,7 +99,10 @@ def test_creation_prints_same_arguments_for_all_creation_methods(
         product = Product("Продукт1", "Описание продукта", 1200, 10)
     elif creation_method == "keyword":
         product = Product(
-            quantity=10, price=1200, description="Описание продукта", name="Продукт1"
+            quantity=10,
+            price=1200,
+            description="Описание продукта",
+            name="Продукт1",
         )
     else:
         product = Product.new_product(
@@ -109,18 +123,24 @@ def test_repr_uses_current_values_without_printing(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     product = Product("Товар", "Описание", 100.0, 3)
-    assert capsys.readouterr().out == "Product('Товар', 'Описание', 100.0, 3)\n"
+    assert (
+        capsys.readouterr().out == "Product('Товар', 'Описание', 100.0, 3)\n"
+    )
 
     product.name = "Новый товар"
     product.description = "Новое описание"
     product.price = 125.5
     product.quantity = 2
 
-    assert repr(product) == "Product('Новый товар', 'Новое описание', 125.5, 2)"
+    assert (
+        repr(product) == "Product('Новый товар', 'Новое описание', 125.5, 2)"
+    )
     assert capsys.readouterr().out == ""
 
 
-def test_repr_escapes_quotes_and_newlines(capsys: pytest.CaptureFixture[str]) -> None:
+def test_repr_escapes_quotes_and_newlines(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     product = Product("Товар\nновый", "Описание 'вариант'", 100.0, 3)
     expected = "Product('Товар\\nновый', \"Описание 'вариант'\", 100.0, 3)"
 
