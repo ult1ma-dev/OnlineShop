@@ -11,6 +11,7 @@ from src.classes import (
     Product,
     Smartphone,
 )
+from src.exceptions import ZeroQuantityError
 from src.utils import load_categories_from_json, read_json
 
 __all__ = [
@@ -23,6 +24,7 @@ __all__ = [
     "PrintMixin",
     "Product",
     "Smartphone",
+    "ZeroQuantityError",
     "load_categories_from_json",
     "read_json",
 ]
